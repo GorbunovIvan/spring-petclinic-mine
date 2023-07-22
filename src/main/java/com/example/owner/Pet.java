@@ -29,7 +29,11 @@ public class Pet extends NamedEntity {
     @JoinColumn(name = "owner_id")
     private Owner owner;
 
-    @OneToMany(mappedBy = "pet")
+    @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL)
     @OrderBy("visit_date ASC")
     private Set<Visit> visits = new LinkedHashSet<>();
+
+    public void addVisit(Visit visit) {
+        getVisits().add(visit);
+    }
 }

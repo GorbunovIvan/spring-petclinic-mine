@@ -30,8 +30,43 @@ public class Owner extends Person {
     @Digits(fraction = 0, integer = 10)
     private String telephone;
 
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     @OrderBy("name")
     @EqualsAndHashCode.Exclude
     private List<Pet> pets = new ArrayList<>();
+
+    public Pet getPet(Pet pet) {
+
+        if (pet.getName().isEmpty()) {
+            return null;
+        }
+
+        return this.getPets().stream()
+                .filter(p -> p.getName().equals(pet.getName()))
+                .findAny()
+                .orElse(null);
+    }
+
+    public Pet getPet(Integer petId) {
+
+        if (petId == null) {
+            return null;
+        }
+
+        return this.getPets().stream()
+                .filter(p -> p.getId().equals(petId))
+                .findAny()
+                .orElse(null);
+    }
+
+    public void addPet(Pet pet) {
+        if (pet.isNew()) {
+            getPets().add(pet);
+        }
+    }
+
+    public void addVisit(Integer petId, Visit visit) {
+        Pet pet = getPet(petId);
+        pet.addVisit(visit);
+    }
 }
