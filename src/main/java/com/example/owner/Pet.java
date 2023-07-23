@@ -14,14 +14,14 @@ import java.util.Set;
 @NoArgsConstructor @AllArgsConstructor
 @Getter @Setter
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public class Pet extends NamedEntity {
 
     @Column(name = "birth_date")
-    @DateTimeFormat(pattern = "yyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
 
-    @ManyToOne
+    @ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
     @JoinColumn(name = "type_id")
     private PetType type;
 
@@ -31,9 +31,12 @@ public class Pet extends NamedEntity {
 
     @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL)
     @OrderBy("visit_date ASC")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Set<Visit> visits = new LinkedHashSet<>();
 
     public void addVisit(Visit visit) {
+        visit.setPet(this);
         getVisits().add(visit);
     }
 }

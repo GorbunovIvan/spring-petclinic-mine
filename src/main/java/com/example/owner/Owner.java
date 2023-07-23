@@ -8,6 +8,7 @@ import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "owners")
@@ -62,12 +63,24 @@ public class Owner extends Person {
 
     public void addPet(Pet pet) {
         if (pet.isNew()) {
+            pet.setOwner(this);
             getPets().add(pet);
         }
+    }
+
+    public void updatePet(Integer petId, Pet pet) {
+        getPets().replaceAll(p -> p.getId().equals(petId) ? pet : p);
     }
 
     public void addVisit(Integer petId, Visit visit) {
         Pet pet = getPet(petId);
         pet.addVisit(visit);
+    }
+
+    public List<Visit> getVisits() {
+        return getPets().stream()
+                .map(Pet::getVisits)
+                .flatMap(Set::stream)
+                .toList();
     }
 }

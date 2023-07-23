@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Adding visit</title>
+</head>
+<body>
+    <div>
+        <form method="POST" th:action="${formActionURL}" th:object="${visit}">
+
+            <div>
+                <label for="visitDate">Visit date</label>
+                <input id="visitDate" type="date" th:field="*{date}"/>
+            </div>
+
+            <div>
+                <label for="description">Description</label>
+                <input id="description" type="text" th:field="*{description}"/>
+            </div>
+
+            <div>
+                <input type="submit" value="Add visit"/>
+            </div>
+
+        </form>
+    </div>
+</body>
+</html>

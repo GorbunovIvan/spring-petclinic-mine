@@ -18,6 +18,7 @@
 
         <div>
             <p><a th:href="@{/owners/__${owner.getId()}__/edit}">Edit owner</a></p>
+            <p><a th:href="@{/owners/__${owner.getId()}__/pets/new}">Add pet</a></p>
             <hr/>
         </div>
 
@@ -25,6 +26,14 @@
             <p>Pets</p>
             <div th:each="pet : ${owner.getPets()}">
                 <p><a th:href="@{/owners/__${owner.getId()}__/pets/__${pet.getId()}__/edit}" th:text="${pet}">pet</a></p>
+            </div>
+            <hr/>
+        </div>
+
+        <div>
+            <p>Visits</p>
+            <div th:each="visit : ${owner.getVisits()}">
+                <p th:text="${visit}">visit</p>
             </div>
         </div>
 

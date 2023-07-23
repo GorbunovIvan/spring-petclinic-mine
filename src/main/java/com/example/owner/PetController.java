@@ -23,6 +23,8 @@ public class PetController {
 
         model.addAttribute("owner", owner);
         model.addAttribute("pet", new Pet());
+        model.addAttribute("formActionURL", "/owners/" + ownerId + "/pets/new");
+        model.addAttribute("formActionURL", String.format("/owners/%d/pets/new", ownerId));
 
         return "pets/createOrUpdatePetForm";
     }
@@ -62,12 +64,13 @@ public class PetController {
 
         model.addAttribute("owner", owner);
         model.addAttribute("pet", pet);
+        model.addAttribute("formActionURL", String.format("/owners/%d/pets/%d/edit", ownerId, petId));
 
         return "pets/createOrUpdatePetForm";
     }
 
     @PostMapping("/pets/{petId}/edit")
-    public String processUpdateForm(@PathVariable Integer ownerId,
+    public String processUpdateForm(@PathVariable Integer ownerId, @PathVariable Integer petId,
                                       @ModelAttribute @Valid Pet pet, BindingResult bindingResult,
                                       Model model) {
 
@@ -79,7 +82,8 @@ public class PetController {
             return "pets/createOrUpdatePetForm";
         }
 
-        owner.addPet(pet);
+        pet.setId(petId);
+        owner.updatePet(petId, pet);
         ownerRepository.save(owner);
 
         return "redirect:/owners/" + ownerId;

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:if="${pet.isNew()}">Adding new pet</title>
+    <title th:unless="${pet.isNew()}">Updating pet</title>
+</head>
+<body>
+    <div>
+
+        <div>
+            <form method="POST" th:action="${formActionURL}" th:object="${pet}">
+
+                <div>
+                    <label for="name">Name</label>
+                    <input id="name" type="text" th:field="*{name}"/>
+                </div>
+
+                <div>
+                    <label for="birthDate">Birth date</label>
+                    <input id="birthDate" type="date" th:field="*{birthDate}"/>
+                </div>
+
+                <div>
+                    <label for="type">Type</label>
+                    <input id="type" type="text" th:field="*{type}"/>
+                </div>
+
+                <div hidden="hidden">
+                    <label for="owner">Owner</label>
+                    <input id="owner" type="text" th:field="*{owner}"/>
+                </div>
+
+                <div>
+                    <input th:if="${pet.isNew()}" type="submit" value="Add pet"/>
+                    <input th:unless="${pet.isNew()}" type="submit" value="Update pet"/>
+                </div>
+
+            </form>
+            <hr/>
+        </div>
+
+        <div>
+            <p>Visits</p>
+            <div th:each="visit : ${pet.getVisits()}">
+                <p th:text="${visit}">visit</p>
+            </div>
+        </div>
+
+        <div>
+            <a th:href="@{/owners/__${owner.getId()}__/pets/__${pet.getId()}__/visits/new}">Add visit</a>
+        </div>
+
+    </div>
+</body>
+</html>

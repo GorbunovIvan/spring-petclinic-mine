@@ -28,6 +28,7 @@ public class VisitController {
         model.addAttribute("owner", owner);
         model.addAttribute("pet", pet);
         model.addAttribute("visit", new Visit());
+        model.addAttribute("formActionURL", String.format("/owners/%d/pets/%d/visits/new", ownerId, petId));
 
         return "pets/createOrUpdateVisitForm";
     }
