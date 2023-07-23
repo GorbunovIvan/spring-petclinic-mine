@@ -13,8 +13,9 @@ public interface OwnerRepository extends JpaRepository<Owner, Integer> {
     @Transactional(readOnly = true)
     List<PetType> findPetTypes();
 
+    @Query("FROM Owner WHERE firstName LIKE :name% OR lastName LIKE :name%")
     @Transactional(readOnly = true)
-    List<Owner> findByLastNameStartingWith(String lastName);
+    List<Owner> findByNameLike(String name);
 
     @Query("FROM Owner owner LEFT JOIN FETCH owner.pets WHERE owner.id = :id")
     @Transactional(readOnly = true)

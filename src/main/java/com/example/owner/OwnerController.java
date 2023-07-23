@@ -18,27 +18,31 @@ public class OwnerController {
 
     @GetMapping("/{id}")
     public String showOwner(@PathVariable Integer id, Model model) {
-        model.addAttribute("owner", ownerRepository.findById(id));
-        return "/owners/ownerDetails";
+
+        var owner = ownerRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("owner with id '" + id + "' is now found"));
+
+        model.addAttribute("owner", owner);
+        return "owners/ownerDetails";
+    }
+
+    @GetMapping
+    public String showOwners(Model model) {
+        model.addAttribute("owners", ownerRepository.findAll());
+        return "owners/ownersList";
     }
 
     @GetMapping("/find")
-    public String initFindForm(Model model) {
-        model.addAttribute("owner", new Owner());
-        return "owners/findOwners";
-    }
-
-    @PostMapping("/find")
     public String processFindForm(@RequestParam String text, Model model) {
 
-        List<Owner> owners = ownerRepository.findByLastNameStartingWith(text);
-
-        if (owners.isEmpty()) {
-            return "owners/findOwners";
+        if (text.isBlank()) {
+            return "redirect:/owners";
         }
 
-        model.addAttribute("owners", owners);
+        List<Owner> owners = ownerRepository.findByNameLike(text);
 
+        model.addAttribute("ownerNameSearch", text);
+        model.addAttribute("owners", owners);
         return "owners/ownersList";
     }
 
@@ -59,7 +63,11 @@ public class OwnerController {
 
     @GetMapping("/{id}/edit")
     public String initUpdateForm(@PathVariable Integer id, Model model) {
-        model.addAttribute("owner", ownerRepository.findById(id));
+
+        var owner = ownerRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("owner with id '" + id + "' is now found"));
+
+        model.addAttribute("owner", owner);
         return "owners/createOrUpdateOwnerForm";
     }
 

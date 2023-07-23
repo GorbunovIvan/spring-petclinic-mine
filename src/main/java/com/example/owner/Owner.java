@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor @AllArgsConstructor
 @Getter @Setter
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public class Owner extends Person {
 
     @Column(name = "address")
@@ -33,6 +33,7 @@ public class Owner extends Person {
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     @OrderBy("name")
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private List<Pet> pets = new ArrayList<>();
 
     public Pet getPet(Pet pet) {

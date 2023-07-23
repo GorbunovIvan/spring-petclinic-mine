@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Owners</title>
+</head>
+<body>
+    <div>
+
+        <div>
+
+            <form method="GET" action="/owners/find">
+                <label for="text">Owner</label>
+                <input id="text" type="text" name="text" th:value="${ownerNameSearch}"/>
+                <input type="submit" value="Find"/>
+            </form>
+
+            <div th:each="owner : ${owners}">
+                <p><a th:href="@{/owners/__${owner.getId()}__}" th:text="${owner}">owner</a></p>
+            </div>
+
+            <hr/>
+
+        </div>
+
+        <div>
+            <p><a href="/owners/new">Add owner</a></p>
+        </div>
+
+    </div>
+</body>
+</html>
