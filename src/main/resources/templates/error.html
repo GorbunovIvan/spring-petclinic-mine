@@ -6,8 +6,12 @@
 </head>
 <body>
     <div>
+
+        <div th:insert="~{fragments/layout :: menu}"></div>
+
         <h2>Something happened...</h2>
         <p th:text="${message}">Exception message</p>
+
     </div>
 </body>
 </html>

@@ -6,6 +6,9 @@
 </head>
 <body>
     <div>
+
+        <div th:insert="~{fragments/layout :: menu}"></div>
+
         <form method="POST" th:action="${formActionURL}" th:object="${visit}">
 
             <div>

@@ -17,7 +17,11 @@ public interface OwnerRepository extends JpaRepository<Owner, Integer> {
     @Transactional(readOnly = true)
     List<Owner> findByNameLike(String name);
 
-    @Query("FROM Owner owner LEFT JOIN FETCH owner.pets WHERE owner.id = :id")
+    @Query("FROM Owner owner " +
+            "LEFT JOIN FETCH owner.pets pets " +
+            "LEFT JOIN FETCH pets.visits " +
+            "LEFT JOIN FETCH pets.type type " +
+            "WHERE owner.id = :id")
     @Transactional(readOnly = true)
     @Override
     Optional<Owner> findById(Integer id);

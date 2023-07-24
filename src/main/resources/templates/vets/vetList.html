@@ -6,10 +6,14 @@
 </head>
 <body>
     <div>
+
+        <div th:insert="~{fragments/layout :: menu}"></div>
+
         <h2>Vets</h2>
         <div th:each="vet : ${vets}">
             <p th:text="${vet}">vet</p>
         </div>
+
     </div>
 </body>
 </html>

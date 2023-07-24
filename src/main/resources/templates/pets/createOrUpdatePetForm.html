@@ -8,6 +8,8 @@
 <body>
     <div>
 
+        <div th:insert="~{fragments/layout :: menu}"></div>
+
         <div>
             <form method="POST" th:action="${formActionURL}" th:object="${pet}">
 

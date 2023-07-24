@@ -7,6 +7,9 @@
 </head>
 <body>
     <div>
+
+        <div th:insert="~{fragments/layout :: menu}"></div>
+
         <form method="POST" th:action="${owner.isNew() ? '/owners/new' : '/owners/__${owner.getId()}__/edit'}" th:object="${owner}">
 
             <div>
