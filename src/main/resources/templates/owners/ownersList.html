@@ -19,8 +19,15 @@
                 <input type="submit" value="Find"/>
             </form>
 
-            <div th:each="owner : ${owners}">
-                <p><a th:href="@{/owners/__${owner.getId()}__}" th:text="${owner}">owner</a></p>
+            <div>
+                <div th:each="owner : ${owners.getContent()}">
+                    <p><a th:href="@{/owners/__${owner.getId()}__}" th:text="${owner}">owner</a></p>
+                </div>
+                <div>
+                    <span th:if="${owners.hasPrevious()}"><a th:href="@{/owners?page=__${owners.previousPageable().getPageNumber()}__}" th:text="${owners.previousPageable().getPageNumber()}">previous page</a></span>
+                    <span th:text="${owners.getNumber}">current page&emsp;</span>
+                    <span th:if="${owners.hasNext()}"><a th:href="@{/owners?page=__${owners.nextPageable().getPageNumber()}__}" th:text="${owners.nextPageable().getPageNumber()}">next page</a></span>
+                </div>
             </div>
 
             <hr/>

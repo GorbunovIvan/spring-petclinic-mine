@@ -1,5 +1,7 @@
 package com.example.owner;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,9 +15,9 @@ public interface OwnerRepository extends JpaRepository<Owner, Integer> {
     @Transactional(readOnly = true)
     List<PetType> findPetTypes();
 
-    @Query("FROM Owner WHERE firstName LIKE :name% OR lastName LIKE :name%")
+    @Query("FROM Owner WHERE firstName LIKE :name% OR lastName LIKE :name% ORDER BY lastName, firstName")
     @Transactional(readOnly = true)
-    List<Owner> findByNameLike(String name);
+    Page<Owner> findByNameLike(String name, Pageable pageable);
 
     @Query("FROM Owner owner " +
             "LEFT JOIN FETCH owner.pets pets " +
@@ -26,7 +28,13 @@ public interface OwnerRepository extends JpaRepository<Owner, Integer> {
     @Override
     Optional<Owner> findById(Integer id);
 
+    @Query("FROM Owner ORDER BY lastName, firstName")
     @Transactional(readOnly = true)
     @Override
     List<Owner> findAll();
+
+    @Query("FROM Owner ORDER BY lastName, firstName")
+    @Transactional(readOnly = true)
+    @Override
+    Page<Owner> findAll(Pageable pageable);
 }

@@ -2,12 +2,15 @@ package com.example.owner;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/owners")
@@ -27,19 +30,20 @@ public class OwnerController {
     }
 
     @GetMapping
-    public String showOwners(Model model) {
-        model.addAttribute("owners", ownerRepository.findAll());
+    public String showOwners(@RequestParam(required = false) Integer page, Model model) {
+        Pageable pageable = PageRequest.of(Objects.requireNonNullElse(page, 0), 3);
+        model.addAttribute("owners", ownerRepository.findAll(pageable));
         return "owners/ownersList";
     }
 
     @GetMapping("/find")
-    public String processFindForm(@RequestParam String text, Model model) {
+    public String processFindForm(@RequestParam String text, Pageable pageable, Model model) {
 
         if (text.isBlank()) {
             return "redirect:/owners";
         }
 
-        List<Owner> owners = ownerRepository.findByNameLike(text);
+        Page<Owner> owners = ownerRepository.findByNameLike(text, pageable);
 
         model.addAttribute("ownerNameSearch", text);
         model.addAttribute("owners", owners);
