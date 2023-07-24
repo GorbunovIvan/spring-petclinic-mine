@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vets</title>
+</head>
+<body>
+    <div>
+        <h2>Vets</h2>
+        <div th:each="vet : ${vets}">
+            <p th:text="${vet}">vet</p>
+        </div>
+    </div>
+</body>
+</html>
