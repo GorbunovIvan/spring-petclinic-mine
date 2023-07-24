@@ -8,6 +8,6 @@ public class CrashController {
 
     @GetMapping("/oups")
     public String error() {
-        throw new RuntimeException("Expected: controller used to showcase what " + "happens when an exception is thrown");
+        throw new RuntimeException("Expected: controller used to showcase what happens when an exception is thrown");
     }
 }
