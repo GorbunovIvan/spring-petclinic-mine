@@ -10,13 +10,14 @@ import java.util.Set;
 @Table(name = "vets")
 @NoArgsConstructor @AllArgsConstructor
 @Getter @Setter
-@ToString
+@ToString(callSuper = true)
 public class Vet extends Person {
 
     @ManyToMany
     @JoinTable(name = "vet_specialties",
-                joinColumns = { @JoinColumn(name = "specialty_id") },
-                inverseJoinColumns = { @JoinColumn(name = "vet_id") }
+                joinColumns = { @JoinColumn(name = "vet_id") },
+                inverseJoinColumns = { @JoinColumn(name = "specialty_id") }
     )
+    @ToString.Exclude
     private Set<Specialty> specialties;
 }

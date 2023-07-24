@@ -9,4 +9,8 @@ import lombok.AllArgsConstructor;
 @Table(name = "types")
 @AllArgsConstructor
 public class PetType extends NamedEntity {
+
+    public PetType(String name) {
+        setName(name);
+    }
 }

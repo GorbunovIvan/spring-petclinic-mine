@@ -19,7 +19,7 @@ public class PetTypeFormatter implements Formatter<PetType> {
                 .stream()
                 .filter(pType -> pType.getName().equals(text))
                 .findAny()
-                .orElseThrow(() -> new ParseException("type not found: " + text, 0));
+                .orElseGet(() -> new PetType(text));
     }
 
     @Override

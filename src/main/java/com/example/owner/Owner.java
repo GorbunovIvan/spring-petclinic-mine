@@ -8,13 +8,14 @@ import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "owners")
 @NoArgsConstructor @AllArgsConstructor
 @Getter @Setter
 @EqualsAndHashCode(callSuper = true)
-@ToString
+@ToString(callSuper = true)
 public class Owner extends Person {
 
     @Column(name = "address")
@@ -30,8 +31,56 @@ public class Owner extends Person {
     @Digits(fraction = 0, integer = 10)
     private String telephone;
 
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     @OrderBy("name")
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private List<Pet> pets = new ArrayList<>();
+
+    public Pet getPet(Pet pet) {
+
+        if (pet.getName().isEmpty()) {
+            return null;
+        }
+
+        return this.getPets().stream()
+                .filter(p -> p.getName().equals(pet.getName()))
+                .findAny()
+                .orElse(null);
+    }
+
+    public Pet getPet(Integer petId) {
+
+        if (petId == null) {
+            return null;
+        }
+
+        return this.getPets().stream()
+                .filter(p -> p.getId().equals(petId))
+                .findAny()
+                .orElse(null);
+    }
+
+    public void addPet(Pet pet) {
+        if (pet.isNew()) {
+            pet.setOwner(this);
+            getPets().add(pet);
+        }
+    }
+
+    public void updatePet(Integer petId, Pet pet) {
+        getPets().replaceAll(p -> p.getId().equals(petId) ? pet : p);
+    }
+
+    public void addVisit(Integer petId, Visit visit) {
+        Pet pet = getPet(petId);
+        pet.addVisit(visit);
+    }
+
+    public List<Visit> getVisits() {
+        return getPets().stream()
+                .map(Pet::getVisits)
+                .flatMap(Set::stream)
+                .toList();
+    }
 }

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Owners</title>
+</head>
+<body>
+    <div>
+
+        <div th:insert="~{fragments/layout :: menu}"></div>
+
+        <div>
+
+            <h2>Owners</h2>
+
+            <form method="GET" action="/owners/find">
+                <label for="text">Owner</label>
+                <input id="text" type="text" name="text" th:value="${ownerNameSearch}"/>
+                <input type="submit" value="Find"/>
+            </form>
+
+            <div>
+                <div th:each="owner : ${owners.getContent()}">
+                    <p><a th:href="@{/owners/__${owner.getId()}__}" th:text="${owner}">owner</a></p>
+                </div>
+                <div>
+                    <span th:if="${owners.hasPrevious()}"><a th:href="@{/owners?page=__${owners.previousPageable().getPageNumber()}__}" th:text="${owners.previousPageable().getPageNumber()}">previous page</a></span>
+                    <span th:text="${owners.getNumber}">current page&emsp;</span>
+                    <span th:if="${owners.hasNext()}"><a th:href="@{/owners?page=__${owners.nextPageable().getPageNumber()}__}" th:text="${owners.nextPageable().getPageNumber()}">next page</a></span>
+                </div>
+            </div>
+
+            <hr/>
+
+        </div>
+
+        <div>
+            <p><a href="/owners/new">Add owner</a></p>
+        </div>
+
+    </div>
+</body>
+</html>

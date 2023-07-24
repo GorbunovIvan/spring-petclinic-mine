@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${'owner ' + owner}">Owner</title>
+</head>
+<body>
+    <div>
+
+        <div th:insert="~{fragments/layout :: menu}"></div>
+
+        <div>
+            <p>First name: <span th:text="${owner.getFirstName()}">first name</span></p>
+            <p>Last name: <span th:text="${owner.getLastName()}">last name</span></p>
+            <p>Address: <span th:text="${owner.getAddress()}">address</span></p>
+            <p>City: <span th:text="${owner.getCity()}">city</span></p>
+            <p>Telephone: <span th:text="${owner.getTelephone()}">telephone</span></p>
+            <hr/>
+        </div>
+
+        <div>
+            <p><a th:href="@{/owners/__${owner.getId()}__/edit}">Edit owner</a></p>
+            <p><a th:href="@{/owners/__${owner.getId()}__/pets/new}">Add pet</a></p>
+            <hr/>
+        </div>
+
+        <div>
+            <p>Pets</p>
+            <div th:each="pet : ${owner.getPets()}">
+                <p><a th:href="@{/owners/__${owner.getId()}__/pets/__${pet.getId()}__/edit}" th:text="${pet}">pet</a></p>
+            </div>
+            <hr/>
+        </div>
+
+        <div>
+            <p>Visits</p>
+            <div th:each="visit : ${owner.getVisits()}">
+                <p th:text="${visit}">visit</p>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
