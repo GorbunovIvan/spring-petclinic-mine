@@ -3,10 +3,13 @@ package com.example;
 import com.example.owner.Owner;
 import com.example.owner.Pet;
 import com.example.owner.PetType;
+import com.example.vet.Specialty;
+import com.example.vet.Vet;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class Utils {
 
@@ -60,5 +63,28 @@ public class Utils {
         var owners = List.of(owner1, owner2);
 
         return new ArrayList<>(owners);
+    }
+
+    public static List<Vet> generateVets() {
+
+        Specialty specialty1 = new Specialty();
+        specialty1.setId(1);
+        specialty1.setName("vet");
+
+        Vet vet1 = new Vet();
+        vet1.setId(1);
+        vet1.setFirstName("vet 1 first name");
+        vet1.setLastName("vet 1 last name");
+        vet1.setSpecialties(Set.of(specialty1));
+
+        Vet vet2 = new Vet();
+        vet2.setId(2);
+        vet2.setFirstName("vet 2 first name");
+        vet2.setLastName("vet 2 last name");
+        vet2.setSpecialties(Set.of(specialty1));
+
+        var vetsList = List.of(vet1, vet2);
+
+        return new ArrayList<>(vetsList);
     }
 }

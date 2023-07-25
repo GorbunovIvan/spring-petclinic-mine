@@ -13,7 +13,7 @@ import java.util.Set;
 @ToString(callSuper = true)
 public class Vet extends Person {
 
-    @ManyToMany
+    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
     @JoinTable(name = "vet_specialties",
                 joinColumns = { @JoinColumn(name = "vet_id") },
                 inverseJoinColumns = { @JoinColumn(name = "specialty_id") }

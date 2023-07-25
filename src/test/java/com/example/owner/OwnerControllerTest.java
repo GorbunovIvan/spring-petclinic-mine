@@ -61,6 +61,7 @@ class OwnerControllerTest {
             when(ownerRepository.findById(owner.getId())).thenReturn(Optional.of(owner));
             when(ownerRepository.findByNameLike(owner.getFirstName(), Pageable.ofSize(20))).thenReturn(new PageImpl<>(List.of(owner)));
             when(ownerRepository.findByNameLike(owner.getLastName(), Pageable.ofSize(20))).thenReturn(new PageImpl<>(List.of(owner)));
+            when(ownerRepository.save(owner)).thenReturn(owner);
         }
     }
 

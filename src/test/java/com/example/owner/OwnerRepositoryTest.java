@@ -1,8 +1,7 @@
 package com.example.owner;
 
 import com.example.Utils;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -19,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.HSQLDB)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class OwnerRepositoryTest {
 
     @Autowired
@@ -30,16 +30,12 @@ class OwnerRepositoryTest {
 
     @BeforeEach
     void setUp() {
-
         var ownersList = Utils.generateOwners();
-
-        // saving to DB
-        for (var owner : ownersList) {
-            owners.add(ownerRepository.save(owner));
-        }
+        owners = ownerRepository.saveAll(ownersList);
     }
 
     @Test
+    @Order(1)
     void testFindPetTypes() {
 
         var petTypes = ownerRepository.findPetTypes();
@@ -55,6 +51,7 @@ class OwnerRepositoryTest {
     }
 
     @Test
+    @Order(2)
     void testFindByNameLike() {
 
         for (var owner : owners) {
@@ -68,6 +65,7 @@ class OwnerRepositoryTest {
     }
 
     @Test
+    @Order(3)
     void testFindById() {
 
         for (var owner : owners) {
@@ -80,11 +78,13 @@ class OwnerRepositoryTest {
     }
 
     @Test
+    @Order(4)
     void testFindAll() {
         assertEquals(owners, ownerRepository.findAll());
     }
 
     @Test
+    @Order(5)
     void testFindAllPageable() {
         assertEquals(owners, ownerRepository.findAll(pageable).getContent());
     }
