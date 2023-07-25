@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -14,6 +15,11 @@ import org.springframework.web.bind.annotation.*;
 public class PetController {
 
     private final OwnerRepository ownerRepository;
+
+    @InitBinder("pet")
+    private void initPetBinder(WebDataBinder binder) {
+        binder.setValidator(new PetValidator());
+    }
 
     @GetMapping("/pets/new")
     public String initCreationForm(@PathVariable Integer ownerId, Model model) {
@@ -42,6 +48,7 @@ public class PetController {
         }
 
         if (bindingResult.hasErrors()) {
+            model.addAttribute("owner", owner);
             model.addAttribute("pet", pet);
             return "pets/createOrUpdatePetForm";
         }
@@ -78,6 +85,7 @@ public class PetController {
                 .orElseThrow(() -> new RuntimeException("Owner with id '" + ownerId + "' is not found"));
 
         if (bindingResult.hasErrors()) {
+            model.addAttribute("owner", owner);
             model.addAttribute("pet", pet);
             return "pets/createOrUpdatePetForm";
         }

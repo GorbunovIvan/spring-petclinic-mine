@@ -21,7 +21,7 @@ public class Pet extends NamedEntity {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
 
-    @ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+    @ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
     @JoinColumn(name = "type_id")
     private PetType type;
 
@@ -30,7 +30,7 @@ public class Pet extends NamedEntity {
     private Owner owner;
 
     @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL)
-    @OrderBy("visit_date ASC")
+    @OrderBy("date ASC")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Set<Visit> visits = new LinkedHashSet<>();

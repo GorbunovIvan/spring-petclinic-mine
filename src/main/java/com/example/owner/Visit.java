@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Table(name = "visits")
 @AllArgsConstructor
 @Getter @Setter
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 @ToString
 public class Visit extends BaseEntity {
 
