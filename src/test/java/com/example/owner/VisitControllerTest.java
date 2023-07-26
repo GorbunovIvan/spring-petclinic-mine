@@ -81,9 +81,10 @@ class VisitControllerTest {
                         .param("description", "")
                         .param("date", ""))
                 .andExpect(status().isOk())
-                .andExpect(view().name("pets/createOrUpdateVisitForm"));
+                .andExpect(view().name("pets/createOrUpdateVisitForm"))
+                .andExpect(content().string(containsString("Add visit")));
 
-        verify(ownerRepository, times(1)).findById(owner.getId());
+        verify(ownerRepository, times(2)).findById(owner.getId());
         verify(ownerRepository, times(1)).save(any(Owner.class));
     }
 }

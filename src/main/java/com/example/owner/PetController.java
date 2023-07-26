@@ -29,8 +29,6 @@ public class PetController {
 
         model.addAttribute("owner", owner);
         model.addAttribute("pet", new Pet());
-        model.addAttribute("formActionURL", "/owners/" + ownerId + "/pets/new");
-        model.addAttribute("formActionURL", String.format("/owners/%d/pets/new", ownerId));
 
         return "pets/createOrUpdatePetForm";
     }
@@ -69,9 +67,12 @@ public class PetController {
 
         var pet = owner.getPet(petId);
 
+        if (pet == null) {
+            throw new RuntimeException("Pet with id '" + petId + "' for this owner (id='" + ownerId + "') is not found");
+        }
+
         model.addAttribute("owner", owner);
         model.addAttribute("pet", pet);
-        model.addAttribute("formActionURL", String.format("/owners/%d/pets/%d/edit", ownerId, petId));
 
         return "pets/createOrUpdatePetForm";
     }
@@ -84,13 +85,14 @@ public class PetController {
         var owner = ownerRepository.findById(ownerId)
                 .orElseThrow(() -> new RuntimeException("Owner with id '" + ownerId + "' is not found"));
 
+        pet.setId(petId);
+
         if (bindingResult.hasErrors()) {
             model.addAttribute("owner", owner);
             model.addAttribute("pet", pet);
             return "pets/createOrUpdatePetForm";
         }
 
-        pet.setId(petId);
         owner.updatePet(petId, pet);
         ownerRepository.save(owner);
 

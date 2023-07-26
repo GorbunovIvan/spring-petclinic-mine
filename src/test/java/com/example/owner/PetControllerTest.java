@@ -84,7 +84,8 @@ class PetControllerTest {
                         .param("type", "")
                         .param("birthDate", ""))
                 .andExpect(status().isOk())
-                .andExpect(view().name("pets/createOrUpdatePetForm"));
+                .andExpect(view().name("pets/createOrUpdatePetForm"))
+                .andExpect(content().string(containsString("Add pet")));
 
         verify(ownerRepository, times(2)).findById(owner.getId());
         verify(ownerRepository, times(1)).save(any(Owner.class));
@@ -123,7 +124,8 @@ class PetControllerTest {
                         .param("type", "")
                         .param("birthDate", ""))
                 .andExpect(status().isOk())
-                .andExpect(view().name("pets/createOrUpdatePetForm"));
+                .andExpect(view().name("pets/createOrUpdatePetForm"))
+                .andExpect(content().string(containsString("Update pet")));
 
         verify(ownerRepository, times(2)).findById(owner.getId());
         verify(ownerRepository, times(1)).save(any(Owner.class));

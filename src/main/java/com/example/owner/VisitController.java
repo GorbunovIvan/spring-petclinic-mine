@@ -28,7 +28,6 @@ public class VisitController {
         model.addAttribute("owner", owner);
         model.addAttribute("pet", pet);
         model.addAttribute("visit", new Visit());
-        model.addAttribute("formActionURL", String.format("/owners/%d/pets/%d/visits/new", ownerId, petId));
 
         return "pets/createOrUpdateVisitForm";
     }
@@ -38,13 +37,21 @@ public class VisitController {
                                       @ModelAttribute @Valid Visit visit, BindingResult bindingResult,
                                       Model model) {
 
+        var owner = ownerRepository.findById(ownerId)
+                .orElseThrow(() -> new RuntimeException("Owner with id '" + ownerId + "' is not found"));
+
+        var pet = owner.getPet(petId);
+
+        if (pet == null) {
+            throw new RuntimeException("Pet with id '" + petId + "' for this owner (id='" + ownerId + "') is not found");
+        }
+
         if (bindingResult.hasErrors()) {
+            model.addAttribute("owner", owner);
+            model.addAttribute("pet", pet);
             model.addAttribute("visit", visit);
             return "pets/createOrUpdateVisitForm";
         }
-
-        var owner = ownerRepository.findById(ownerId)
-                .orElseThrow(() -> new RuntimeException("Owner with id '" + ownerId + "' is not found"));
 
         owner.addVisit(petId, visit);
         ownerRepository.save(owner);
