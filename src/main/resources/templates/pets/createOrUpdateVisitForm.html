@@ -9,16 +9,18 @@
 
         <div th:insert="~{fragments/layout :: menu}"></div>
 
-        <form method="POST" th:action="${formActionURL}" th:object="${visit}">
+        <form method="POST" th:action="@{/owners/__${owner.getId()}__/pets/__${pet.getId()}__/visits/new}" th:object="${visit}">
 
             <div>
                 <label for="visitDate">Visit date</label>
                 <input id="visitDate" type="date" th:field="*{date}"/>
+                <div style="color:red" th:if="${#fields.hasErrors('date')}" th:errors="*{date}">Visit date error</div>
             </div>
 
             <div>
                 <label for="description">Description</label>
                 <input id="description" type="text" th:field="*{description}"/>
+                <div style="color:red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Description error</div>
             </div>
 
             <div>
