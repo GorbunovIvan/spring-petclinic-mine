@@ -1,0 +1,39 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: petclinic-deployment
+  labels:
+    app: spring-petclinic-mine
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      project: spring-petclinic-mine
+  template:
+    metadata:
+      labels:
+        project: spring-petclinic-mine
+    spec:
+      containers:
+        - name: petclinic-mine
+          image: ivangorbunovv/spring-petclinic-mine-image:latest
+          ports:
+            - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: petclinic
+  labels:
+     env  : dev
+     owner: IvanGorbunov
+spec:
+  selector:
+    project: spring-petclinic-mine
+  ports:
+    - name      : petclinic-listener
+      protocol  : TCP
+      port      : 8080
+      targetPort: 8080
+  #type: CLusterIP
